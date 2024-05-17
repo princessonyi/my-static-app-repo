@@ -1,0 +1,42 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'Windows 11'
+
+variables:
+  azureSubscription: 'Tiny_Fish'
+  appName: 'tinyfish'
+  resourceGroup: 'tiny'
+  artifactName: 'static-web-app-content'
+
+steps:
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(artifactName).zip'
+    replaceExistingArchive: true
+  displayName: 'Archive static website files'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(artifactName).zip'
+    ArtifactName: '$(artifactName)'
+  displayName: 'Publish build artifacts'
+
+- task: DownloadPipelineArtifact@2
+  inputs:
+    artifactName: '$(artifactName)'
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+  displayName: 'Download build artifact'
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: '$(Tiny_Fish)'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az staticwebapp upload --name $(appName) --resource-group $(resourceGroup) --source $(Build.ArtifactStagingDirectory)/$(artifactName).zip
+  displayName: 'Deploy to Azure Static Web App'
