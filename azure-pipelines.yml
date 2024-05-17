@@ -5,7 +5,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  azureSubscription: 'Tiny Fish'
+  azureSubscription: 'princess'
   appName: 'tinyfish'
   resourceGroup: 'tiny'
   artifactName: 'static-web-app-content'
