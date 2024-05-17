@@ -2,10 +2,10 @@ trigger:
 - main
 
 pool:
-  vmImage: 'Windows 11'
+  vmImage: 'windows-latest'
 
 variables:
-  azureSubscription: 'Tiny_Fish'
+  azureSubscription: 'Tiny Fish'
   appName: 'tinyfish'
   resourceGroup: 'tiny'
   artifactName: 'static-web-app-content'
@@ -34,7 +34,7 @@ steps:
 
 - task: AzureCLI@2
   inputs:
-    azureSubscription: '$(Tiny_Fish)'
+    azureSubscription: '$(azureSubscription)'  # Reference variable correctly
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
