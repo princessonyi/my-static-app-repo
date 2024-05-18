@@ -9,6 +9,7 @@ variables:
   appName: 'tinyfish'
   resourceGroup: 'tiny'
   artifactName: 'static-web-app-content'
+  
 
 steps:
 - task: ArchiveFiles@2
